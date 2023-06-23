@@ -110,7 +110,7 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
     }, [])
     
     return (
-        <div ref={timelineRef} class={`w-[${VIDEO_EDITING_TIMELINE_WIDTH}px] min-h-[60px] max-h-[60px] px-2 relative`}>
+        <div ref={timelineRef} class={`w-[${VIDEO_EDITING_TIMELINE_WIDTH}px] min-h-[60px] max-h-[60px] px-2 py-0.5 relative`}>
             <div class='flex w-full h-full overflow-hidden'>
                 {canvasRefs.map((ref, index) => (
                     <canvas class='w-[100px] min-h-[60px] max-h-[60px]' key={index} ref={ref} />
