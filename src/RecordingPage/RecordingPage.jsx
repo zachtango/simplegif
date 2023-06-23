@@ -2,66 +2,72 @@ import React, { useEffect, useRef, useState } from "react"
 
 
 function RecordingPage({ onStopRecording }) {
-    const [loaded, setLoaded] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
 
     const [recorder, setRecorder] = useState()
 
     const videoRef = useRef(null)
 
-    useEffect(() => {
-        (async () => {
-            // Get permission to get screen
-            const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: {
-                    displaySurface: "window",
-                },
-                audio: false,
-            })
+    async function load() {
+        // Get permission to get screen
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+            video: {
+                displaySurface: "window",
+            },
+            audio: false,
+        })
 
-            // Stream screen to video html
-            videoRef.current.srcObject = stream
+        // Stream screen to video html
+        videoRef.current.srcObject = stream
+        
+        // Record screen
+        const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' })
+
+        // Save recording data
+        const chunks = []
+        recorder.ondataavailable = e => {
+            chunks.push(e.data)
+        }
+
+        // Save all recording data as a blob when recorder stops
+        recorder.onstop = e => {
+            const blob = new Blob(chunks, { type: chunks[0].type })
             
-            // Record screen
-            const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' })
+            onStopRecording(blob)
 
-            // Save recording data
-            const chunks = []
-            recorder.ondataavailable = e => {
-                chunks.push(e.data)
-            }
+            // Stop screen sharing
+            stream.getVideoTracks().forEach(track => track.stop())
+        };
 
-            // Save all recording data as a blob when recorder stops
-            recorder.onstop = e => {
-                const blob = new Blob(chunks, { type: chunks[0].type })
-                
-                onStopRecording(blob)
+        recorder.start()
 
-                // Stop screen sharing
-                stream.getVideoTracks().forEach(track => track.stop())
-            };
+        setRecorder(recorder)
 
-            recorder.start()
+        setIsLoaded(true)
+    }
 
-            setRecorder(recorder)
-
-            setLoaded(true)
-        })()
+    useEffect(() => {
+        load()
     }, [])
     
     
     return (
         <div class='w-full h-full flex justify-center'>
             <div class='my-[50px] h-4/6 min-h-[500px] flex flex-col items-center justify-center'>
-                <div class='h-4/5'>
+                <div
+                    class='h-4/5'
+                    style={{
+                        display: isLoaded ? 'block' : 'none'
+                    }}
+                >
                     <video
                         class='max-h-full'
-
                         autoPlay
                         ref={videoRef}
                     />
                 </div>
 
-                {loaded && recorder &&
+                {isLoaded && recorder &&
                     <div class='my-[14px] flex'>
                         <button
                             class="mt-4 flex h-[52px] w-52 items-center justify-around rounded-xl bg-red-500 text-white hover:bg-red-600 active:bg-red-700"
@@ -78,6 +84,11 @@ function RecordingPage({ onStopRecording }) {
                         </button>
                     </div>
                 }
+
+                {!isLoaded && <button
+                    class='rounded-md bg-green-600 p-2 text-white'
+                    onClick={load}
+                >Please Grant Me Screen Recording Access</button>}
             </div>
         </div>
     )
