@@ -1,7 +1,7 @@
 import React from "react"
 import { BsWindow } from 'react-icons/bs'
 
-function LandingPage() {
+function LandingPage({onStartRecording}) {
 
     return (
         <div class='w-full h-full flex justify-center'>
@@ -22,6 +22,7 @@ function LandingPage() {
 
                     <button
                         class="mt-4 flex h-[72px] w-60 items-center justify-around rounded-xl bg-red-500 text-white hover:bg-red-600 active:bg-red-700"
+                        onClick = {onStartRecording}
                     >
                         {/* Recording Text */}
                         <div class='ml-2 tracking-wider'>
