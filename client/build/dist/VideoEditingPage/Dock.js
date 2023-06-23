@@ -20,7 +20,7 @@ function Dock({ffmpeg, videoDuration, videoBlob, videoRef, onStopEditing}) {
     var gifUrl = URL.createObjectURL(gifBlob);
     var link = document.createElement("a");
     link.href = gifUrl;
-    link.download = "test.gif";
+    link.download = "screen_recording.gif";
     link.click();
     setDownloading(false);
   }
