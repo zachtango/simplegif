@@ -48,7 +48,7 @@ function RecordingPage({ onStopRecording }) {
         })()
     }, [])
     
-    console.log(loaded, recorder)
+    
     return (
         <div class='w-full h-full flex justify-center'>
             <div class='my-[50px] h-4/6 min-h-[500px] flex flex-col items-center justify-center'>
