@@ -2,6 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
+let numConnections = 0;
+
 const server = http.createServer((req, res) => {
     res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
     res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
@@ -10,6 +12,8 @@ const server = http.createServer((req, res) => {
     
     // If the request is for the root path, serve the index.html file
     if (req.url === '/') {
+        numConnections += 1;
+        console.log(`Number of connections: ${numConnections}`)
         filePath = path.join(`${__dirname}/../client/build`, 'index.html');
     }
     
