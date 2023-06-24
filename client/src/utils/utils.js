@@ -16,15 +16,52 @@ export function millisecondsToFfmpegString(milliseconds) {
     milliseconds %= MILLISECONDS_PER_SECOND
 
     function toZeroFilled(integer) {
-        // FIXME, do for any length
         if(integer < 10) {
             return `0${integer}`
         }
         return `${integer}`
     }
 
-    milliseconds = `${milliseconds / MILLISECONDS_PER_SECOND}`
-    milliseconds = milliseconds.substring(1)
+    // Convert to decimal of seconds
+    milliseconds = milliseconds / MILLISECONDS_PER_SECOND
+
+    // Round to 3 decimals
+    milliseconds = Math.round(milliseconds * 1000) / 1000
+    
+    milliseconds = `${milliseconds}`.substring(1)
     
     return `${toZeroFilled(hours)}:${toZeroFilled(minutes)}:${toZeroFilled(seconds)}${milliseconds}`
+}
+
+// Fix video duration infinity / NaN bug
+export async function loadVideoDuration(video) {
+    const onDurationChange = function() {
+        // Handle video.duration bug that won't be fixed on chrome
+        // https://stackoverflow.com/questions/21522036/html-audio-tag-duration-always-infinity
+        if(video.duration === Infinity) {
+            video.currentTime = Number.MAX_SAFE_INTEGER
+            setTimeout(() => {
+                video.currentTime = 0
+            }, 1000)
+            return
+        }
+    }
+
+    const waitValidVideoDuration = new Promise((resolve) => {
+        const checkDuration = () => {
+            if(video.duration !== Infinity && !isNaN(video.duration)) {
+                resolve()
+            }
+            else
+                setTimeout(checkDuration, 100) // Retry after 100 ms
+        }
+        checkDuration()
+    })
+
+    video.addEventListener('durationchange', onDurationChange)
+
+    await waitValidVideoDuration
+    
+    // Clean up
+    video.removeEventListener('durationchange', onDurationChange)
 }

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { VIDEO_EDITING_TIMELINE_WIDTH, SIDE, VIDEO_EDITING_CONTAINER_WIDTH, TRIM_SELECTOR_WIDTH_PX, MILLISECONDS_PER_SECOND } from '../utils/constants';
+import { loadVideoDuration } from '../utils/utils';
 
 
-const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMoveRight}) => {
-    
+const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMoveRight, onLoad}) => {
+
     const timelineRef = useRef(null)
 
     function onMouseMove(e, side) {
@@ -68,45 +69,50 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
     const canvasRefs = Array.from({ length: numCanvases }, () => useRef(null))
 
     useEffect(() => {
-        // Draw video thumbnails on timeline
-        const video = videoRef.current;
+        (async () => {
+            // Draw video thumbnails on timeline
+            const video = videoRef.current;
 
-        let time = 0
-        let counter = 0
+            await loadVideoDuration(video)
 
-        function createImage() {
-            if(counter >= numCanvases)
-                return
-            
-            const canvas = canvasRefs[counter].current
-            const context = canvas.getContext('2d')
+            let time = 0
+            let counter = 0
 
-            canvas.width = video.videoWidth
-            canvas.height = video.videoHeight
+            function createImage() {
+                if(counter >= numCanvases)
+                    return
+                
+                const canvas = canvasRefs[counter].current
+                const context = canvas.getContext('2d')
 
-            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
-        }
+                canvas.width = video.videoWidth
+                canvas.height = video.videoHeight
 
-        function loadTime() {
-            if(counter >= numCanvases) {
-                video.removeEventListener('seeked', handleSeeked)
-                video.currentTime = 0
-                return;
+                context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
             }
-            
-            video.currentTime = time
-            time += videoDuration / numCanvases
-            counter += 1
-        }
 
-        function handleSeeked() {
-            createImage()
-            loadTime()
-        }
+            function loadTime() {
+                if(counter >= numCanvases) {
+                    video.removeEventListener('seeked', handleSeeked)
+                    video.currentTime = 0
+                    onLoad()
+                    return;
+                }
+                
+                video.currentTime = time
+                time += videoDuration / numCanvases
+                counter += 1
+            }
 
-        video.addEventListener('seeked', handleSeeked)
+            function handleSeeked() {
+                createImage()
+                loadTime()
+            }
 
-        video.currentTime = 0
+            video.addEventListener('seeked', handleSeeked)
+
+            video.currentTime = 0
+        })()
     }, [])
     
     return (
@@ -134,6 +140,7 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
                     left: left,
                     width: TRIM_SELECTOR_WIDTH_PX
                 }}
+                onDragStart={e => e.preventDefault()}
             />
 
             <div class='rounded-r-md hover:cursor-grab absolute bg-yellow-200 h-full'
@@ -143,6 +150,7 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
                     right: right,
                     width: TRIM_SELECTOR_WIDTH_PX
                 }}
+                onDragStart={e => e.preventDefault()}
             />
         </div>
     )
