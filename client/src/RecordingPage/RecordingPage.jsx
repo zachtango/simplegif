@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
+import Timer from "./Timer"
 
 
-function RecordingPage({ onStopRecording }) {
+function RecordingPage({ videoMimeType, onStopRecording }) {
     const [isLoaded, setIsLoaded] = useState(false)
 
-    const [recorder, setRecorder] = useState()
+    const [mediaRecorder, setMediaRecorder] = useState()
 
     const videoRef = useRef(null)
 
@@ -20,30 +21,37 @@ function RecordingPage({ onStopRecording }) {
         // Stream screen to video html
         videoRef.current.srcObject = stream
         
-        // Record screen
-        const recorder = new MediaRecorder(stream, { mimeType: 'video/webm; codecs=vp9' })
+        try {
+            // Record screen
+            const recorder = new MediaRecorder(stream, { mimeType: videoMimeType })
 
-        // Save recording data
-        const chunks = []
-        recorder.ondataavailable = e => {
-            chunks.push(e.data)
-        }
+            // Save recording data
+            const chunks = []
+            recorder.ondataavailable = e => {
+                chunks.push(e.data)
+            }
 
-        // Save all recording data as a blob when recorder stops
-        recorder.onstop = e => {
-            const blob = new Blob(chunks, { type: chunks[0].type })
-            
-            onStopRecording(blob)
+            // Save all recording data as a blob when recorder stops
+            recorder.addEventListener('stop', () => {
+                const blob = new Blob(chunks, { type: chunks[0].type })
+                
+                onStopRecording(blob)
 
-            // Stop screen sharing
+                // Stop screen sharing
+                stream.getVideoTracks().forEach(track => track.stop())
+            })
+
+            recorder.start()
+
+            setMediaRecorder(recorder)
+
+            setIsLoaded(true)
+        } catch(e) {
+            alert(`Error creating video recorder: ${e}`)
+
+            // Stop screen sharing because of error
             stream.getVideoTracks().forEach(track => track.stop())
-        };
-
-        recorder.start()
-
-        setRecorder(recorder)
-
-        setIsLoaded(true)
+        }
     }
 
     useEffect(() => {
@@ -61,17 +69,20 @@ function RecordingPage({ onStopRecording }) {
                     }}
                 >
                     <video
-                        class='max-h-full'
+                        class='max-h-full min-h-full'
                         autoPlay
                         ref={videoRef}
                     />
                 </div>
 
-                {isLoaded && recorder &&
-                    <div class='my-[14px] flex'>
+                {isLoaded && mediaRecorder &&
+                    <div class='my-[14px] flex flex-col items-center justify-evenly'>
+                        <Timer
+                            mediaRecorder={mediaRecorder}
+                        />
                         <button
                             class="mt-4 flex h-[52px] w-52 items-center justify-around rounded-xl bg-red-500 text-white hover:bg-red-600 active:bg-red-700"
-                            onClick={() => recorder.stop()}
+                            onClick={() => mediaRecorder.stop()}
                         >
                             {/* Stop Recording Text */}
                             <div class='ml-2 tracking-wider'>
