@@ -35,16 +35,17 @@ function VideoEditingPage({videoBlob, onStopEditing}) {
     return (
         <div class='w-full h-full flex justify-center'>
             <div class={`my-[50px] w-[${VIDEO_EDITING_CONTAINER_WIDTH}px] h-[700px] min-w-[${VIDEO_EDITING_CONTAINER_WIDTH}px] min-h-[700px] flex flex-col items-center justify-evenly`}>
-                <div class='w-full h-4/5 flex justify-center'>
+                <div
+                    class='w-full h-4/5 flex justify-center'
+                    style={{
+                        display: isLoaded ? 'flex' : 'none'
+                    }}
+                >
                     <video
                         ref={videoRef}
                         controls
                         class='max-h-full'
                         src={videoBlobUrl}
-
-                        style={{
-                            display: isLoaded ? 'block' : 'none'
-                        }}
                     />
                 </div>
                 
@@ -58,6 +59,8 @@ function VideoEditingPage({videoBlob, onStopEditing}) {
 
                     onStopEditing={onStopEditing}
                 />}
+
+                {!isLoaded && <div>Loading Video Editor...</div>}
             </div>
         </div>
     )
