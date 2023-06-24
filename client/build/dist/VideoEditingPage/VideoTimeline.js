@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "../../_snowpack/pkg/react.js";
 import {VIDEO_EDITING_TIMELINE_WIDTH, SIDE, VIDEO_EDITING_CONTAINER_WIDTH, TRIM_SELECTOR_WIDTH_PX, MILLISECONDS_PER_SECOND} from "../utils/constants.js";
-const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMoveRight}) => {
+import {loadVideoDuration} from "../utils/utils.js";
+const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMoveRight, onLoad}) => {
   const timelineRef = useRef(null);
   function onMouseMove(e, side) {
     const leftBound = timelineRef.current.offsetLeft;
@@ -34,34 +35,38 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
   const numCanvases = Math.ceil(VIDEO_EDITING_TIMELINE_WIDTH / 100);
   const canvasRefs = Array.from({length: numCanvases}, () => useRef(null));
   useEffect(() => {
-    const video = videoRef.current;
-    let time = 0;
-    let counter = 0;
-    function createImage() {
-      if (counter >= numCanvases)
-        return;
-      const canvas = canvasRefs[counter].current;
-      const context = canvas.getContext("2d");
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-    }
-    function loadTime() {
-      if (counter >= numCanvases) {
-        video.removeEventListener("seeked", handleSeeked);
-        video.currentTime = 0;
-        return;
+    (async () => {
+      const video = videoRef.current;
+      await loadVideoDuration(video);
+      let time = 0;
+      let counter = 0;
+      function createImage() {
+        if (counter >= numCanvases)
+          return;
+        const canvas = canvasRefs[counter].current;
+        const context = canvas.getContext("2d");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
       }
-      video.currentTime = time;
-      time += videoDuration / numCanvases;
-      counter += 1;
-    }
-    function handleSeeked() {
-      createImage();
-      loadTime();
-    }
-    video.addEventListener("seeked", handleSeeked);
-    video.currentTime = 0;
+      function loadTime() {
+        if (counter >= numCanvases) {
+          video.removeEventListener("seeked", handleSeeked);
+          video.currentTime = 0;
+          onLoad();
+          return;
+        }
+        video.currentTime = time;
+        time += videoDuration / numCanvases;
+        counter += 1;
+      }
+      function handleSeeked() {
+        createImage();
+        loadTime();
+      }
+      video.addEventListener("seeked", handleSeeked);
+      video.currentTime = 0;
+    })();
   }, []);
   return /* @__PURE__ */ React.createElement("div", {
     ref: timelineRef,
@@ -88,7 +93,8 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
       top: 0,
       left,
       width: TRIM_SELECTOR_WIDTH_PX
-    }
+    },
+    onDragStart: (e) => e.preventDefault()
   }), /* @__PURE__ */ React.createElement("div", {
     class: "rounded-r-md hover:cursor-grab absolute bg-yellow-200 h-full",
     onMouseDown: (e) => onMouseDown(e, SIDE.RIGHT),
@@ -96,7 +102,8 @@ const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMove
       top: 0,
       right,
       width: TRIM_SELECTOR_WIDTH_PX
-    }
+    },
+    onDragStart: (e) => e.preventDefault()
   }));
 };
 export default VideoTimeline;

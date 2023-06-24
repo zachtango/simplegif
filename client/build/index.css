@@ -596,6 +596,9 @@ video {
 .min-h-\[700px\] {
   min-height: 700px;
 }
+.min-h-full {
+  min-height: 100%;
+}
 .w-12 {
   width: 3rem;
 }
@@ -619,6 +622,9 @@ video {
 }
 .w-\[700px\] {
   width: 700px;
+}
+.w-\[75px\] {
+  width: 75px;
 }
 .w-full {
   width: 100%;
