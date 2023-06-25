@@ -4,6 +4,7 @@
     "detect-browser": "./detect-browser.js",
     "react": "./react.js",
     "react-dom/client": "./react-dom/client.js",
-    "react-icons/bs": "./react-icons/bs.js"
+    "react-icons/bs": "./react-icons/bs.js",
+    "react-icons/fi": "./react-icons/fi.js"
   }
 }
