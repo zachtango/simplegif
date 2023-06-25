@@ -34,34 +34,35 @@ export function millisecondsToFfmpegString(milliseconds) {
 }
 
 // Fix video duration infinity / NaN bug
+// https://stackoverflow.com/questions/21522036/html-audio-tag-duration-always-infinity
 export async function loadVideoDuration(video) {
-    const onDurationChange = function() {
-        // Handle video.duration bug that won't be fixed on chrome
-        // https://stackoverflow.com/questions/21522036/html-audio-tag-duration-always-infinity
-        if(video.duration === Infinity) {
-            video.currentTime = Number.MAX_SAFE_INTEGER
-            setTimeout(() => {
-                video.currentTime = 0
-            }, 1000)
-            return
-        }
+    const getDuration = () => {
+        video.addEventListener("durationchange", function (e) {
+            if(video.duration === Infinity || isNaN(video.duration)) {
+                video.currentTime = Number.MAX_SAFE_INTEGER
+                setTimeout(() => {
+                    video.currentTime = 0
+                }, 1000)
+            }
+        }, false)
+        video.load()
+        video.currentTime = Number.MAX_SAFE_INTEGER
+        video.play()
     }
+    
+    getDuration()
 
     const waitValidVideoDuration = new Promise((resolve) => {
         const checkDuration = () => {
             if(video.duration !== Infinity && !isNaN(video.duration)) {
                 resolve()
             }
-            else
+            else {
                 setTimeout(checkDuration, 100) // Retry after 100 ms
+            }
         }
         checkDuration()
     })
 
-    video.addEventListener('durationchange', onDurationChange)
-
     await waitValidVideoDuration
-    
-    // Clean up
-    video.removeEventListener('durationchange', onDurationChange)
 }
