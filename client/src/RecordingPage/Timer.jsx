@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Tracks time elapsed while screen recording
-function Timer({ mediaRecorder }) {
+function Timer() {
   const [time, setTime] = useState(0);
 
   useEffect(() => {

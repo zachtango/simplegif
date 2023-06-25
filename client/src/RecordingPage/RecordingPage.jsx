@@ -71,7 +71,7 @@ function RecordingPage({ videoMimeType, onStopRecording }) {
 
         {isLoaded && mediaRecorder && (
           <div class='my-[14px] flex flex-col items-center justify-evenly'>
-            <Timer mediaRecorder={mediaRecorder} />
+            <Timer />
             <button
               class='mt-4 flex h-[52px] w-52 items-center justify-around rounded-xl bg-red-500 text-white hover:bg-red-600 active:bg-red-700'
               onClick={() => mediaRecorder.stop()}

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   VIDEO_EDITING_TIMELINE_WIDTH,
   SIDE,
-  VIDEO_EDITING_CONTAINER_WIDTH,
   TRIM_SELECTOR_WIDTH_PX,
   MILLISECONDS_PER_SECOND,
 } from '../utils/constants';
