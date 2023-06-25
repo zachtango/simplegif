@@ -32,18 +32,16 @@ function Timer({ mediaRecorder }) {
     const seconds = Math.floor((time % 60000) / 1000);
     const milliseconds = Math.floor((time % 1000) / 10);
 
-    return `${padWithZero(minutes)}:${padWithZero(seconds)}.${padWithZero(milliseconds)}`;
+    return `${padWithZero(minutes)}:${padWithZero(seconds)}.${padWithZero(
+      milliseconds
+    )}`;
   };
 
   const padWithZero = (value) => {
     return value.toString().padStart(2, '0');
   };
 
-  return (
-    <div class='w-[75px]'>
-        {formatTime()}
-    </div>
-  );
+  return <div class='w-[75px]'>{formatTime()}</div>;
 }
 
 export default Timer;

@@ -12,7 +12,7 @@ function LandingPage({onStartRecording}) {
     class: "text-base font-normal text-neutral-600 text-lg text-center"
   }, "Made by a ", /* @__PURE__ */ React.createElement("span", {
     class: "font-bold"
-  }, "developer"), " for ", /* @__PURE__ */ React.createElement("span", {
+  }, "developer"), " for", " ", /* @__PURE__ */ React.createElement("span", {
     class: "font-bold"
   }, "developers"), ".")), !isMobile ? /* @__PURE__ */ React.createElement("div", {
     class: "w-[700px] flex flex-row justify-evenly items-center"

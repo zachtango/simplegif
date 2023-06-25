@@ -1,7 +1,12 @@
 import React, {useState} from "../../_snowpack/pkg/react.js";
 import {FiChevronDown} from "../../_snowpack/pkg/react-icons/fi.js";
 import VideoTimeline from "./VideoTimeline.js";
-import {MILLISECONDS_PER_SECOND, RESOLUTION_TO_FFMPEG_ARG, TRIM_SELECTOR_WIDTH_PX, VIDEO_EDITING_TIMELINE_WIDTH} from "../utils/constants.js";
+import {
+  MILLISECONDS_PER_SECOND,
+  RESOLUTION_TO_FFMPEG_ARG,
+  TRIM_SELECTOR_WIDTH_PX,
+  VIDEO_EDITING_TIMELINE_WIDTH
+} from "../utils/constants.js";
 import {millisecondsToFfmpegString} from "../utils/utils.js";
 function Dock({ffmpeg, videoDuration, videoBlob, videoRef, onStopEditing}) {
   const [left, setLeft] = useState(0);

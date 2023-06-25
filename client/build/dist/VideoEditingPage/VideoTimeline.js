@@ -1,7 +1,21 @@
 import React, {useEffect, useRef, useState} from "../../_snowpack/pkg/react.js";
-import {VIDEO_EDITING_TIMELINE_WIDTH, SIDE, VIDEO_EDITING_CONTAINER_WIDTH, TRIM_SELECTOR_WIDTH_PX, MILLISECONDS_PER_SECOND} from "../utils/constants.js";
+import {
+  VIDEO_EDITING_TIMELINE_WIDTH,
+  SIDE,
+  VIDEO_EDITING_CONTAINER_WIDTH,
+  TRIM_SELECTOR_WIDTH_PX,
+  MILLISECONDS_PER_SECOND
+} from "../utils/constants.js";
 import {loadVideoDuration} from "../utils/utils.js";
-const VideoTimeline = ({videoDuration, videoRef, left, right, onMoveLeft, onMoveRight, onLoad}) => {
+const VideoTimeline = ({
+  videoDuration,
+  videoRef,
+  left,
+  right,
+  onMoveLeft,
+  onMoveRight,
+  onLoad
+}) => {
   const timelineRef = useRef(null);
   function onMouseMove(e, side) {
     const leftBound = timelineRef.current.offsetLeft;
