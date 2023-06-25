@@ -1,6 +1,7 @@
 import React from "../../_snowpack/pkg/react.js";
 import {BsWindow} from "../../_snowpack/pkg/react-icons/bs.js";
 function LandingPage({onStartRecording}) {
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
   return /* @__PURE__ */ React.createElement("div", {
     class: "w-full h-full flex justify-center"
   }, /* @__PURE__ */ React.createElement("div", {
@@ -13,7 +14,7 @@ function LandingPage({onStartRecording}) {
     class: "font-bold"
   }, "developer"), " for ", /* @__PURE__ */ React.createElement("span", {
     class: "font-bold"
-  }, "developers"), ".")), /* @__PURE__ */ React.createElement("div", {
+  }, "developers"), ".")), !isMobile ? /* @__PURE__ */ React.createElement("div", {
     class: "w-[700px] flex flex-row justify-evenly items-center"
   }, /* @__PURE__ */ React.createElement("div", {
     class: "w-[250px] h-[200px] p-[10px] flex flex-col justify-center items-center border-2 rounded-xl bg-blue-100"
@@ -28,6 +29,6 @@ function LandingPage({onStartRecording}) {
     class: "flex h-12 w-12 content-center items-center rounded-full bg-white shadow-md"
   }, /* @__PURE__ */ React.createElement("div", {
     class: "mx-auto h-4 w-4 rounded-full bg-red-600 p-0"
-  })))), /* @__PURE__ */ React.createElement("p", null, "No signups, no watermarks, no BS")));
+  })))) : /* @__PURE__ */ React.createElement("p", null, "Sorry, this is not available on mobile devices"), /* @__PURE__ */ React.createElement("p", null, "No signups, no watermarks, no BS")));
 }
 export default LandingPage;

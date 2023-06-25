@@ -3,6 +3,8 @@ import { BsWindow } from 'react-icons/bs'
 
 function LandingPage({onStartRecording}) {
 
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent)
+
     return (
         <div class='w-full h-full flex justify-center'>
             <div class='flex flex-col my-[100px] h-[500px] items-center justify-evenly'>
@@ -11,6 +13,7 @@ function LandingPage({onStartRecording}) {
                     <p class="text-base font-normal text-neutral-600 text-lg text-center">Made by a <span class='font-bold'>developer</span> for <span class='font-bold'>developers</span>.</p>
                 </div>
 
+                {!isMobile ?
                 <div class='w-[700px] flex flex-row justify-evenly items-center'>
                     <div class='w-[250px] h-[200px] p-[10px] flex flex-col justify-center items-center border-2 rounded-xl bg-blue-100'>
                         {/* Screen Icon */}
@@ -35,7 +38,8 @@ function LandingPage({onStartRecording}) {
                             </div>
                         </div>
                     </button>
-                </div>
+                </div> :
+                <p>Sorry, this is not available on mobile devices</p>}
 
                 <p>No signups, no watermarks, no BS</p>
             </div>
