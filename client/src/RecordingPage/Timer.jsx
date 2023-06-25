@@ -5,17 +5,26 @@ function Timer({ mediaRecorder }) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    let interval = null;
+    let animationFrameId = null;
+    let startTime = null;
 
-    // Start the timer
-    interval = setInterval(() => {
-      setTime(prevTime => prevTime + 10); // Increase time by 10 milliseconds
-    }, 10);
+    const animate = (timestamp) => {
+      if (!startTime) {
+        startTime = timestamp;
+      }
 
-    // Media recorder guaranteed to be defined
-    mediaRecorder.addEventListener('stop', () => {
-        clearInterval(interval)
-    })
+      const elapsedTime = timestamp - startTime;
+      setTime(elapsedTime);
+
+      animationFrameId = window.requestAnimationFrame(animate);
+    };
+
+    animationFrameId = window.requestAnimationFrame(animate);
+
+    // Clean up the animation frame when the component unmounts
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   const formatTime = () => {

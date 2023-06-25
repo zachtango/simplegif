@@ -2,13 +2,20 @@ import React, {useState, useEffect} from "../../_snowpack/pkg/react.js";
 function Timer({mediaRecorder}) {
   const [time, setTime] = useState(0);
   useEffect(() => {
-    let interval = null;
-    interval = setInterval(() => {
-      setTime((prevTime) => prevTime + 10);
-    }, 10);
-    mediaRecorder.addEventListener("stop", () => {
-      clearInterval(interval);
-    });
+    let animationFrameId = null;
+    let startTime = null;
+    const animate = (timestamp) => {
+      if (!startTime) {
+        startTime = timestamp;
+      }
+      const elapsedTime = timestamp - startTime;
+      setTime(elapsedTime);
+      animationFrameId = window.requestAnimationFrame(animate);
+    };
+    animationFrameId = window.requestAnimationFrame(animate);
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+    };
   }, []);
   const formatTime = () => {
     const minutes = Math.floor(time / 6e4);
