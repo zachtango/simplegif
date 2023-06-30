@@ -45,7 +45,7 @@ function VideoEditingPage({
   const trimsRef = React.useRef([left, right])
 
   // Resolutions
-  const [resolution, setResolution] = useState<Resolution>('1080');
+  const [resolution, setResolution] = useState<Resolution>('720');
   const resolutions = ['360', '480', '720', '1080'];
 
   const [isDownloading, setIsDownloading] = useState(false)

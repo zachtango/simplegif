@@ -60,25 +60,26 @@ function Video({
         
             videoContext.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
 
-            // Save frame part of image that's not supposed to be blurred
+            // Save frame part of image that's not supposed to be filtered
             const [x, y, w, h] = crop
             const frame = videoContext.getImageData(x, y, w, h)
             
-            // Apply blur if crop box exists
+            // Apply brightness filter if crop box exists
             if(w != video.videoWidth || h != video.videoHeight) {
                 if(context.filter !== undefined) {
                     // Check for filter support (e.g. Safari does not support it)
-                    context.filter = "blur(10px)";
+                    context.filter = "brightness(30%)";
                     context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
                 } else {
                     context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight)
 
-                    // Add blur for unsupported browsers
+                    // FIXME: change to brightness filter when find appropriate library to handle
+                    // Add blur filter for unsupported browsers
                     StackBlur.canvasRGB(canvas, 0, 0, video.videoWidth, video.videoHeight, 100)
                 }
             }
 
-            // Write saved frame back unblurred
+            // Write saved frame back unfiltered
             context.putImageData(frame, x, y)
 
             // Render 60 fps
