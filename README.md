@@ -1,70 +1,20 @@
-# Getting Started with Create React App
+# GIF Screen Recorder
+[Simple GIF](https://simplegif.com) screen recorder website that provides simple video editing as well
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Why this exists
+At my software internship, I was documenting my system and found GIFs are very useful (a picture is worth a thousand words);
+however, there were no options for me on my laptop to record the screen to GIF. I looked online for solutions, but they all were
+annoying to use (lack of features, sign up, watermarks, etc.). I wanted a tool that was extremely simple that I could instantly
+start using. That's why I made this website. The goal was for this tool to be very intuitive for developers that need GIFs for
+their documentation. This is a one stop shop to record your GIFs and do quick video edits. See the website at [simplegif](https://simplegif.com)
 
-## Available Scripts
+![demo](screenshots/demo.gif)
 
-In the project directory, you can run:
+## Browser support
+I tested and confirmed screen recording works on the modern browsers: Chrome, Firefox, and Safari.
 
-### `npm start`
+## To Do
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### Video Cropping
+Browsers do not have the capability to record a portion of the screen like screenshots in Windows or Mac.
+Therefore, the only solution is to provide cropping in the video editor
