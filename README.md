@@ -13,8 +13,13 @@ their documentation. This is a one stop shop to record your GIFs and do quick vi
 ## Browser support
 I tested and confirmed screen recording works on the modern browsers: Chrome, Firefox, and Safari.
 
+## Features
+1. Rendering to GIF
+2. Cropping
+3. Trimming
+4. Copying to Base64 String
+
 ## To Do
 
-#### Video Cropping
-Browsers do not have the capability to record a portion of the screen like screenshots in Windows or Mac.
-Therefore, the only solution is to provide cropping in the video editor
+#### Fix Video Resolution
+Known bug where cropping dimensions can cause resolution scale to error out; for now I disabled resolution customization until this is addressed.
