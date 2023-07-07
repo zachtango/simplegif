@@ -1,7 +1,6 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { createFFmpeg } from '@ffmpeg/ffmpeg';
-import videoPath from '../../video.mp4';
 import Video from './Video';
 import Timeline from './Timeline';
 import { FiChevronDown } from 'react-icons/fi';
