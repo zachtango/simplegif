@@ -129,7 +129,7 @@ export async function saveGif(
     '-to',
     millisecondsToFfmpegString(end),
     '-vf',
-    `crop=${w}:${h}:${x}:${y},${RESOLUTION_TO_FFMPEG_ARG[resolution]}`,
+    `crop=${w}:${h}:${x}:${y}`,
     'recording.gif',
   );
 
@@ -144,6 +144,8 @@ export async function saveGif(
   link.href = gifUrl;
   link.download = `screen_recording${resolution}.gif`;
   link.click();
+
+  return gifBlob
 }
 
 // Converts milliseconds (integer) to FFMPEG string format hh:mm:ss.(ms fraction)
@@ -176,3 +178,27 @@ function millisecondsToFfmpegString(milliseconds: number) {
 }
 
 
+/*
+    Given GIF Blob
+        Copy to clipboard
+*/
+export async function gifToClipboard(gifBlob: Blob) {
+//   // New clipboard item
+//   const clipboardItem = new ClipboardItem({ 'image/gif': gifBlob })
+
+  // Convert the GIF blob to a Data URL
+  const reader = new FileReader();
+  reader.onloadend = function () {
+    const dataUrl = reader.result as string;
+
+    // Copy the Data URL to the clipboard
+    navigator.clipboard.writeText(dataUrl)
+    .then(() => {
+        console.log('GIF copied to clipboard!');
+    })
+    .catch((error) => {
+        console.error('Failed to copy GIF:', error);
+    });
+  };
+  reader.readAsDataURL(gifBlob);
+}

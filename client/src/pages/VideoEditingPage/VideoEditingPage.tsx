@@ -4,7 +4,7 @@ import { createFFmpeg } from '@ffmpeg/ffmpeg';
 import Video from './Video';
 import Timeline from './Timeline';
 import { FiChevronDown } from 'react-icons/fi';
-import { saveGif } from '../../utils/utils';
+import { gifToClipboard, saveGif } from '../../utils/utils';
 
 const ffmpeg = createFFmpeg({
   log: true,
@@ -49,16 +49,19 @@ function VideoEditingPage({
 
   const [isDownloading, setIsDownloading] = useState(false);
 
+  // Edited GIF
+  const [gif, setGif] = useState<Blob | null>(null)
+
   useEffect(() => {
     if (!ffmpeg.isLoaded()) ffmpeg.load();
   }, []);
 
   const saveGifHandler = async () => {
-    if (!crop) return;
+    if (!crop) return null;
 
     setIsDownloading(true);
 
-    await saveGif(
+    const gif = await saveGif(
       ffmpeg,
       videoBlob,
       video.duration,
@@ -68,7 +71,10 @@ function VideoEditingPage({
       resolution,
     );
 
+    setGif(gif);
     setIsDownloading(false);
+
+    return gif
   };
 
   return (
@@ -93,11 +99,11 @@ function VideoEditingPage({
 
         <div className="flex justify-evenly mt-4">
           {isDownloading ? (
-            <div>Downloading...</div>
+            <div>Rendering GIF...</div>
           ) : (
             <>
-              <div className="w-[200px] flex justify-evenly">
-                <div className="relative inline-block">
+              <div className="w-[400px] flex justify-evenly">
+                {/* <div className="relative inline-block">
                   <select
                     className="block appearance-none w-full py-2 pl-3 pr-8 border border-gray-300 bg-white focus:outline-none focus:ring-0 rounded-md shadow-sm"
                     onChange={(e) =>
@@ -114,13 +120,30 @@ function VideoEditingPage({
                   <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                     <FiChevronDown className="w-5 h-5 text-gray-400" />
                   </div>
-                </div>
+                </div> */}
 
                 <button
                   className="rounded-md bg-green-600 p-2 text-white"
                   onClick={saveGifHandler}
                 >
                   Save GIF
+                </button>
+                <button
+                  className="rounded-md bg-green-600 p-2 text-white"
+                  onClick={async () => {
+                    let g = gif;
+
+                    if(!g) {
+                      g = await saveGifHandler()
+                    }
+
+                    if(g) {
+                      await gifToClipboard(g)
+                      alert('Copied GIF')
+                    }
+                  }}
+                >
+                  Copy (Base64 String)
                 </button>
               </div>
 
