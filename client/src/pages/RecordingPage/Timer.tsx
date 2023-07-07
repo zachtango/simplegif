@@ -5,8 +5,8 @@ function Timer() {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    let animationFrameId : number | null = null;
-    let startTime : number | null = null;
+    let animationFrameId: number | null = null;
+    let startTime: number | null = null;
 
     const animate = (timestamp: number) => {
       if (!startTime) {
@@ -23,8 +23,7 @@ function Timer() {
 
     // Clean up the animation frame when the component unmounts
     return () => {
-      if(animationFrameId)
-        window.cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
@@ -34,7 +33,7 @@ function Timer() {
     const milliseconds = Math.floor((time % 1000) / 10);
 
     return `${padWithZero(minutes)}:${padWithZero(seconds)}.${padWithZero(
-      milliseconds
+      milliseconds,
     )}`;
   };
 
@@ -42,7 +41,7 @@ function Timer() {
     return value.toString().padStart(2, '0');
   };
 
-  return <div className='w-[75px]'>{formatTime()}</div>;
+  return <div className="w-[75px]">{formatTime()}</div>;
 }
 
 export default Timer;

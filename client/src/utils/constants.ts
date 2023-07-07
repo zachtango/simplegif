@@ -8,8 +8,8 @@ export const PAGE_STATE = {
 
 export enum TrimSide {
   Left,
-  Right
-};
+  Right,
+}
 
 export const RESOLUTION_TO_FFMPEG_ARG = {
   '360': 'scale=640:360:force_original_aspect_ratio=decrease',

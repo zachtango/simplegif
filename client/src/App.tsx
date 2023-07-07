@@ -58,11 +58,7 @@ function App() {
       throw `Unknown page state ${pageState}`;
   }
 
-  return (
-    <div className='App w-full h-full'>
-      {page}
-    </div>
-  );
+  return <div className="App w-full h-full">{page}</div>;
 }
 
 export default App;
