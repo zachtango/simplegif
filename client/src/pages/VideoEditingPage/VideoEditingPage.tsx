@@ -102,7 +102,7 @@ function VideoEditingPage({
             <div>Rendering GIF...</div>
           ) : (
             <>
-              <div className="w-[400px] flex justify-evenly">
+              {/* <div className="w-[400px] flex justify-evenly"> */}
                 {/* <div className="relative inline-block">
                   <select
                     className="block appearance-none w-full py-2 pl-3 pr-8 border border-gray-300 bg-white focus:outline-none focus:ring-0 rounded-md shadow-sm"
@@ -128,7 +128,7 @@ function VideoEditingPage({
                 >
                   Save GIF
                 </button>
-                <button
+                {/* <button
                   className="rounded-md bg-green-600 p-2 text-white"
                   onClick={async () => {
                     let g = gif;
@@ -144,8 +144,8 @@ function VideoEditingPage({
                   }}
                 >
                   Copy (Base64 String)
-                </button>
-              </div>
+                </button> */}
+              {/* </div> */}
 
               <button
                 className="rounded-md bg-green-600 p-2 text-white"
